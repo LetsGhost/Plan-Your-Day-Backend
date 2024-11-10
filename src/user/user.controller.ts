@@ -38,7 +38,12 @@ export class UserController {
         message,
       };
     } catch (error) {
-      console.log(error);
+      Logger.error(error, 'UserController');
+      return {
+        success: false,
+        code: 500,
+        message: 'Internal server error',
+      };
     }
   }
 

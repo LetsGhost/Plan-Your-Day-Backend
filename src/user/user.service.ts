@@ -16,7 +16,6 @@ export class UserService {
       // Check if the user already exists
       const existingUser = await this.userModel.findOne({ email: user.email });
       if (existingUser) {
-        console.log(existingUser);
         return {
           success: false,
           code: 409,
