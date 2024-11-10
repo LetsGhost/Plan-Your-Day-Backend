@@ -4,7 +4,6 @@ import {
   Injectable,
   UnauthorizedException,
   Dependencies,
-  Logger,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
@@ -21,10 +20,8 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   async validate(email, password) {
     const user = await this.authService.validateUser(email, password);
     if (!user) {
-      Logger.error('Invalid credentials', 'LocalStrategy');
       throw new UnauthorizedException();
     }
-    Logger.log('User validated successfully', 'LocalStrategy');
     return user;
   }
 }
