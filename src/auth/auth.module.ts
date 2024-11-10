@@ -13,7 +13,7 @@ import { AuthController } from './auth.controller';
     PassportModule,
     JwtModule.register({
       secret: 'secretKey',
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '5h' },
     }),
   ],
   controllers: [AuthController],
