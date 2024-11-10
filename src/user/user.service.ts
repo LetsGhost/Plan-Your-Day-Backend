@@ -49,6 +49,7 @@ export class UserService {
   }> {
     try {
       const user = await this.userModel.findOne({ email: email.toString() });
+      console.log(user);
       if (!user) {
         return {
           success: false,
