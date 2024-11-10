@@ -1,6 +1,6 @@
 import { Controller, Post, Body, Logger, Get, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
-import { LocalAuthGuard } from 'src/auth/local-auth.guard';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('/user')
 export class UserController {
@@ -42,7 +42,7 @@ export class UserController {
     }
   }
 
-  @UseGuards(LocalAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('findByEmail')
   async findByEmail(@Body() email: string) {
     try {

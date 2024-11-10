@@ -51,7 +51,6 @@ export class UserService {
     try {
       const user = await this.userModel.findOne({ email: email.toString() });
       if (!user) {
-        console.log('User not found');
         return {
           success: false,
           code: 404,
