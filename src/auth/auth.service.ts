@@ -1,39 +1,35 @@
-import { Injectable, Dependencies, Logger } from '@nestjs/common';
+import { Injectable, Dependencies } from '@nestjs/common';
 import { UserService } from '../user/user.service';
+import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-
-type DoneFunction = (err: Error | null, user?: any | null) => void;
 
 @Injectable()
 @Dependencies(UserService)
 export class AuthService {
   private userService: UserService;
+  private jwtService: JwtService;
 
   constructor(usersService) {
     this.userService = usersService;
+    this.jwtService = new JwtService();
   }
 
   async validateUser(email, pass) {
     const { user } = await this.userService.findByEmail(email);
     if (user && (await bcrypt.compare(pass, user.password))) {
+      // Correct password comparison
       const { password, ...result } = user;
-      Logger.log('User validated successfully', 'AuthService');
       return result;
     }
-    Logger.error('Invalid credentials', 'AuthService');
     return null;
   }
 
-  serializeUser(user: any, done: DoneFunction) {
-    done(null, user.id);
-  }
-
-  async deserializeUser(id: string, done: DoneFunction) {
-    const user = await this.userService.findById(id);
-    if (user) {
-      done(null, user);
-    } else {
-      done(new Error('User not found'), null);
-    }
+  async login(user) {
+    const payload = { email: user.email, sub: user._id };
+    return {
+      access_token: await this.jwtService.signAsync(payload, {
+        secret: 'secretKey',
+      }),
+    };
   }
 }
