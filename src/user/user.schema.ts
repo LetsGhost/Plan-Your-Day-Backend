@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { Task, TaskSchema } from 'src/task/task.schema';
 
 export type UserDocument = HydratedDocument<User>;
 
@@ -16,8 +15,8 @@ export class User {
   @Prop()
   password: string;
 
-  @Prop({ type: TaskSchema })
-  tasks: Task[];
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Task' })
+  tasks: mongoose.Types.ObjectId[];
 
   @Prop({ default: Date.now })
   createdAt: Date;
