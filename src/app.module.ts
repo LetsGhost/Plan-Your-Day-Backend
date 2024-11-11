@@ -4,12 +4,14 @@ import { UserModule } from './user/user.module';
 import { Logger } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { TaskModule } from './task/task.module';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 @Module({
   imports: [
     MongooseModule.forRootAsync({
       useFactory: () => ({
-        uri: 'mongodb://localhost:27017/plan_your_day',
+        uri: `${process.env.MONGO_URI}`,
         connectionFactory: (connection) => {
           connection.on('connected', () => {
             Logger.log('MongoDB connected successfully', 'MongoDB');

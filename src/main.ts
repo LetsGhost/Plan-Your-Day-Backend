@@ -3,13 +3,15 @@ import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import * as session from 'express-session';
 import * as passport from 'passport';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.enableCors();
   app.use(
     session({
-      secret: 'secretKey',
+      secret: `${process.env.SECRET_KEY}`,
       resave: false,
       saveUninitialized: false,
     }),

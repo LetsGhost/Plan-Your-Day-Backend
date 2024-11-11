@@ -2,6 +2,8 @@ import { Injectable, Dependencies } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 @Injectable()
 @Dependencies(UserService)
@@ -28,7 +30,7 @@ export class AuthService {
     const payload = { email: user.email, sub: user._id };
     return {
       access_token: await this.jwtService.signAsync(payload, {
-        secret: 'secretKey',
+        secret: `${process.env.SECRET_KEY}`,
       }),
     };
   }
